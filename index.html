@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Theme - Side Buttons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* พื้นหลัง */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            display: flex;
+        }
+
+        .bg-side {
+            width: 50%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) brightness(40%) contrast(120%);
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .bg-left {
+            background-image: url('https://img5.pic.in.th/file/secure-sv1/Pasted-20251031-180756_preview_rev_1.png');
+        }
+
+        .bg-right {
+            background-image: url('https://img2.pic.in.th/pic/ChatGPT-Image-Jul-6-2025-03_55_53-PM.png');
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* ปุ่มด้านข้าง */
+        .side-buttons {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .side-button-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 4rem;
+            pointer-events: auto;
+        }
+
+        .left-button {
+            justify-content: flex-start;
+        }
+
+        .right-button {
+            justify-content: flex-end;
+        }
+
+        .side-btn {
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            background: rgba(20, 20, 20, 0.8);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            width: 220px;
+        }
+
+        .side-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            z-index: -1;
+            transition: all 0.4s ease;
+        }
+
+        .side-btn:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .side-btn:hover:before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+        }
+
+        .side-btn:active {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .btn-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            transition: transform 0.4s ease;
+        }
+
+        .side-btn:hover .btn-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .btn-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .btn-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* เนื้อหากลาง */
+        .center-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 10px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .logo p {
+            font-size: 1.2rem;
+            color: #aaa;
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+
+        .divider {
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
+            margin: 2rem auto;
+        }
+
+        /* เอฟเฟกต์เส้นกริด */
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        /* เอฟเฟกต์เมื่อ hover บนพื้นหลัง */
+        .bg-side:hover {
+            filter: grayscale(70%) brightness(50%) contrast(130%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .side-button-container {
+                padding: 0 2rem;
+            }
+            
+            .side-btn {
+                width: 180px;
+                padding: 1.2rem 2rem;
+            }
+            
+            .btn-title {
+                font-size: 1.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .side-buttons {
+                flex-direction: column;
+            }
+            
+            .side-button-container {
+                width: 100%;
+                height: 50%;
+                justify-content: center;
+                padding: 2rem;
+            }
+            
+            .background {
+                flex-direction: column;
+            }
+            
+            .bg-side {
+                width: 100%;
+                height: 50%;
+            }
+            
+            .center-content {
+                top: 25%;
+                transform: translate(-50%, 0);
+            }
+            
+            .divider {
+                display: none;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+                letter-spacing: 5px;
+            }
+            
+            .logo p {
+                font-size: 1rem;
+            }
+        }
+            #landing footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <!-- พื้นหลัง -->
+    <div class="background">
+        <div class="bg-side bg-left"></div>
+        <div class="bg-side bg-right"></div>
+        <div class="bg-overlay"></div>
+    </div>
+    
+    <!-- เส้นกริดพื้นหลัง -->
+    <div class="grid-lines"></div>
+    
+    <!-- ปุ่มด้านข้าง -->
+    <div class="side-buttons">
+        <div class="side-button-container left-button">
+            <a href="https://ezqelusia.netlify.app/" class="side-btn">
+                <i class="fas fa-crown btn-icon"></i>
+                <span class="btn-title">ezqelusia</span>
+            </a>
+        </div>
+        
+        <div class="side-button-container right-button">
+            <a href="https://kingoftrap.netlify.app/?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExZjFITkpvbnRsZ1lWOEE4SQEeWPKWrOZWwyj1nAFNIWBfWxwTlwWWiE9H2oQTHaovFlGlhisY-GUjO3-_Zfs_aem_fGxVoWmlmzAK51JpwFVexw" class="side-btn">
+                <i class="fas fa-crown btn-icon"></i>
+                <span class="btn-title">Kingoftrap</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- เนื้อหากลาง -->
+    <div class="center-content">
+        <div class="logo">
+            <h1>EZQELUSIA & KING OF TRAP</h1>
+            <p>DEITY DOES NOT GROUP</p>
+        </div>
+        
+    <footer>© 2025 EZQELUSIA & KING OF TRAP</footer>
+
+    <script>
+        // เพิ่มเอฟเฟกต์เมื่อโหลดหน้าเว็บ
+        document.addEventListener('DOMContentLoaded', function() {
+            const sideButtons = document.querySelectorAll('.side-btn');
+            const bgSides = document.querySelectorAll('.bg-side');
+            
+            // เอฟเฟกต์เมื่อ hover ปุ่มซ้าย
+            sideButtons[0].addEventListener('mouseenter', function() {
+                bgSides[0].style.filter = 'grayscale(50%) brightness(60%) contrast(140%)';
+            });
+            
+            sideButtons[0].addEventListener('mouseleave', function() {
+                bgSides[0].style.filter = 'grayscale(100%) brightness(40%) contrast(120%)';
+            });
+            
+            // เอฟเฟกต์เมื่อ hover ปุ่มขวา
+            sideButtons[1].addEventListener('mouseenter', function() {
+                bgSides[1].style.filter = 'grayscale(50%) brightness(60%) contrast(140%)';
+            });
+            
+            sideButtons[1].addEventListener('mouseleave', function() {
+                bgSides[1].style.filter = 'grayscale(100%) brightness(40%) contrast(120%)';
+            });
+        });
+        document.addEventListener('keydown', function(e) {
+    if (e.keyCode === 123) {
+        e.preventDefault();
+        closeWebsite("ไม่สามารถเปิด Developer Tools ได้");
+        return false;
+    }
+    
+    if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) {
+        e.preventDefault();
+        closeWebsite("ไม่สามารถเปิด Developer Tools ได้");
+        return false;
+    }
+    
+    if (e.ctrlKey && e.keyCode === 85) {
+        e.preventDefault();
+        closeWebsite("ไม่สามารถดู Source Code ได้");
+        return false;
+    }
+});
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    closeWebsite("ไม่สามารถคลิกขวาได้");
+    return false;
+});
+
+function closeWebsite(message) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        padding: 20px;
+    `;
+    
+    overlay.innerHTML = `
+        <div style="background: rgba(255, 68, 68, 0.2); padding: 30px; border-radius: 15px; border: 2px solid #ff4444; max-width: 400px;">
+            <h1 style="color: #ff4444; margin-bottom: 20px; font-size: 2rem;">⚠️ ระบบความปลอดภัย</h1>
+            <p style="margin-bottom: 25px; font-size: 1.2rem; line-height: 1.5;">${message}</p>
+            <p style="color: #cccccc; margin-bottom: 30px;">เว็บไซต์จะปิดลงใน <span id="countdown">3</span> วินาที</p>
+            <button onclick="forceClose()" style="
+                background: #ff4444;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1.1rem;
+                font-weight: bold;
+            ">ปิดเว็บไซต์ทันที</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    let countdown = 1;
+    const countdownElement = document.getElementById('countdown');
+    
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+        
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            forceClose();
+        }
+    }, 1000);
+}
+
+function forceClose() {
+    window.open('', '_self', '');
+    window.close();
+    
+    setTimeout(() => {
+        window.location.href = 'about:blank';
+    }, 100);
+
+    setTimeout(() => {
+        document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:2rem;">🚫 เว็บไซต์ถูกปิดโดยระบบความปลอดภัย</div>';
+        document.body.style.overflow = 'hidden';
+    }, 200);
+}
+
+let devToolsCheckInterval;
+
+function startDevToolsCheck() {
+    let lastWidth = window.innerWidth;
+    let lastHeight = window.innerHeight;
+    
+    devToolsCheckInterval = setInterval(() => {
+        const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+        const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+        
+        if (widthDiff > 100 || heightDiff > 100) {
+            if (widthDiff !== lastWidth || heightDiff !== lastHeight) {
+                closeWebsite("ตรวจพบการเปิด Developer Tools");
+            }
+        }
+        
+        lastWidth = widthDiff;
+        lastHeight = heightDiff;
+    }, 1000);
+}
+
+(function() {
+    let consoleOpen = false;
+    
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+        get: function() {
+            if (!consoleOpen) {
+                consoleOpen = true;
+                setTimeout(() => {
+                    closeWebsite("ตรวจพบการพยายามเปิด Developer Tools");
+                }, 500);
+            }
+        }
+    });
+    
+    console.log('%c🔒 ระบบความปลอดภัย', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log(element);
+})();
+
+document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    closeWebsite("ไม่สามารถคัดลอกข้อความได้");
+    return false;
+});
+
+document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        closeWebsite("ไม่สามารถลากภาพได้");
+        return false;
+    }
+});
+
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        closeWebsite("ไม่สามารถบันทึกรูปภาพได้");
+        return false;
+    });
+});
+
+setTimeout(startDevToolsCheck, 2000);
+
+if (window.self !== window.top) {
+    closeWebsite("ไม่สามารถเปิดเว็บไซต์ใน iframe ได้");
+}
+
+console.log("🔒 ระบบความปลอดภัย EZQELUSIA ถูกเปิดใช้งานแล้ว - การเปิด Developer Tools จะทำให้เว็บไซต์ปิดลงทันที");
+    </script>
+</body>
+</html>
